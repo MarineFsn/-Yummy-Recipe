@@ -4,18 +4,17 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-4">
-		{% if not ingredients.items is same as([]) %}
+<div class="container mt-4">
+	{% if not ingredients.items is same as([]) %}
 		<h1>My ingredients</h1>
 
 		<a href="{{ path('app_ingredient.new') }}" class="btn btn-primary">
-			Add your ingredient Here! 
+			Add your ingredient Here!
 		</a>
 
 
-
 		{% for message in app.flashes('success') %}
-			<div class="alert alert-success mt-4">
+			<div class="alert alert-dismissible alert-success mt-4">
 				{{ message }}
 			</div>
 		{% endfor  %}
@@ -35,7 +34,7 @@
 					<th scope="col">Price</th>
 					<th scope="col">Creation date</th>
 					<th scope="col"> Edit </th>
-					<th scope="col"> delete </th>
+					<th scope="col"> Delete </th>
 				</tr>
 			</thead>
 			<tbody>

@@ -68,11 +68,11 @@ class IngredientController extends AbstractController
     public function edit(
         IngredientRepository $repository,
         int $id,
-        Request $request, 
+        Request $request,
         EntityManagerInterface $manager
     ): Response {
 
-        $ingredient = $repository->findOneBy(['id'-> $id]);
+        $ingredient = $repository->findOneBy(['id' => $id]);
         $form = $this->createForm(IngredientType::class, $ingredient);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -82,8 +82,8 @@ class IngredientController extends AbstractController
             $manager->flush();
 
             $this->addFlash(
-                "Success",
-                "your ingredient has been updated with success!"
+                'Success',
+                'your ingredient has been updated with success!'
             );
             return $this->redirectToRoute('app_ingredient');
         }
@@ -93,28 +93,25 @@ class IngredientController extends AbstractController
         ]);
     }
 
+    
 
-    #[Route('/ingredient/delete/{id}', name : 'app_ingredient.delete', methods: ['GET'])]
+    #[Route('/ingredient/delete/{id}', name: 'app_ingredient.delete', methods: ['GET'])]
     public function delete(
-        Ingredient $ingredient,
-        EntityManagerInterface $manager, 
-     ) : Response { 
+        IngredientRepository $repository,
+        int $id,
+        EntityManagerInterface $manager,
+    ): Response {
 
-        if (!$ingredient) {
-            $this->addFlash(
-                'success',
-                'Your ingredient doesn\'t exist!'
-            );
-            return $this->redirectToRoute('app_ingredient');
-        }
+        $ingredient = $repository->findOneBy(['id' => $id]);
         $manager->remove($ingredient);
         $manager->flush();
 
         $this->addFlash(
-            "Success",
-            "your ingredient has been deleted with success!"
+            'Success',
+            'your ingredient has been deleted with success!'
         );
- 
+
+        return $this->redirectToRoute('app_ingredient');
     }
 
 }

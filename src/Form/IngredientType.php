@@ -41,11 +41,16 @@ class IngredientType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary mt-4',
+                    'class' => 'btn btn-primary mt-4'
                 ],
-                'label' => 'Add ingredient! '
-                
+                'label' => 'ok!',
             ]);
     }
 
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Ingredient::class,
+        ]);
+    }
 }
