@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Ingredient;
 use App\Form\IngredientType;
 use App\Repository\IngredientRepository;
@@ -12,8 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
+
 class IngredientController extends AbstractController
 {
+
+
     #[Route('/ingredient', name: 'app_ingredient', methods: ['GET'])]
     public function index(IngredientRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -23,22 +28,23 @@ class IngredientController extends AbstractController
             10
         );
 
-
         return $this->render('pages/ingredient/index.html.twig', [
             'ingredients' => $ingredients
         ]);
     }
 
+
+
     #[Route('/ingredient/new', name: 'app_ingredient.new', methods: ['GET', 'POST'])]
     public function new(
         EntityManagerInterface $manager,
-        Request $request): Response 
-    {
+        Request $request
+    ): Response {
         $ingredient = new Ingredient();
         $form = $this->createForm(IngredientType::class, $ingredient);
 
         $form->handleRequest($request);
-        if($form-> isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $ingredient = $form->getData();
             $manager->persist($ingredient);
             $manager->flush();
@@ -48,7 +54,7 @@ class IngredientController extends AbstractController
                 'your ingredient has been added with success!'
             );
 
-          return $this->redirectToRoute('app_ingredient');
+            return $this->redirectToRoute('app_ingredient');
         }
 
         return $this->render('pages/ingredient/new.html.twig', [
@@ -56,15 +62,59 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    #[Route('ingredient/edit/{id}', name: 'app_ingredient.edit', methods: ['GET', 'POST'])]
-    public function edit(IngredientRepository $repository, int $id): Response
-    {
-        $ingredient = $repository->findOneBy(["id"=> $id]);
+
+
+    #[Route('/ingredient/edit/{id}', name: 'app_ingredient.edit', methods: ['GET', 'POST'])]
+    public function edit(
+        IngredientRepository $repository,
+        int $id,
+        Request $request, 
+        EntityManagerInterface $manager
+    ): Response {
+
+        $ingredient = $repository->findOneBy(['id'-> $id]);
         $form = $this->createForm(IngredientType::class, $ingredient);
-       
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ingredient = $form->getData();
+
+            $manager->persist($ingredient);
+            $manager->flush();
+
+            $this->addFlash(
+                "Success",
+                "your ingredient has been updated with success!"
+            );
+            return $this->redirectToRoute('app_ingredient');
+        }
+
         return $this->render('pages/ingredient/edit.html.twig', [
             'form' => $form->createView()
         ]);
-
     }
+
+
+    #[Route('/ingredient/delete/{id}', name : 'app_ingredient.delete', methods: ['GET'])]
+    public function delete(
+        Ingredient $ingredient,
+        EntityManagerInterface $manager, 
+     ) : Response { 
+
+        if (!$ingredient) {
+            $this->addFlash(
+                'success',
+                'Your ingredient doesn\'t exist!'
+            );
+            return $this->redirectToRoute('app_ingredient');
+        }
+        $manager->remove($ingredient);
+        $manager->flush();
+
+        $this->addFlash(
+            "Success",
+            "your ingredient has been deleted with success!"
+        );
+ 
+    }
+
 }
