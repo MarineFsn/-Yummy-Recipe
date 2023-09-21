@@ -13,15 +13,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
-
 class IngredientController extends AbstractController
 {
-
-
     #[Route('/ingredient', name: 'app_ingredient', methods: ['GET'])]
-    public function index(IngredientRepository $repository, PaginatorInterface $paginator, Request $request): Response
-    {
+    public function index(
+        IngredientRepository $repository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response {
         $ingredients = $paginator->paginate(
             $repository->findAll(),
             $request->query->getInt('page', 1),
@@ -51,7 +50,7 @@ class IngredientController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'your ingredient has been added with success!'
+                'Your ingredient has been added with success!'
             );
 
             return $this->redirectToRoute('app_ingredient');
@@ -82,9 +81,10 @@ class IngredientController extends AbstractController
             $manager->flush();
 
             $this->addFlash(
-                'Success',
+                'success',
                 'your ingredient has been updated with success!'
             );
+
             return $this->redirectToRoute('app_ingredient');
         }
 
@@ -107,11 +107,13 @@ class IngredientController extends AbstractController
         $manager->flush();
 
         $this->addFlash(
-            'Success',
+            'success',
             'your ingredient has been deleted with success!'
         );
 
         return $this->redirectToRoute('app_ingredient');
     }
+
+    
 
 }

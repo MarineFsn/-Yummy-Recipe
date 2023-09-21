@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}[yummy]Recipes - My Recipes
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		{% if not recipes.items is same as([]) %}
+			<h1>My Recipes</h1>
+
+			<a href="{{ path('app_recipe.new') }}" class="btn btn-primary mt-4">
+				Add your recipe Here!
+			</a>
+
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-dismissible alert-success mt-4">
+					{{ message }}
+				</div>
+			{% endfor  %}
+
+			<div class="count mt-4">
+				<h5>You've got
+					{{ recipes.getTotalItemCount }}
+					recipes in your list
+				</h5>
+			</div>
+
+			<table class="table table-hover mt-4">
+				<thead>
+					<tr>
+						<th scope="col">Number</th>
+						<th scope="col">Name</th>
+						<th scope="col">Price</th>
+						<th scope="col">Difficulty</th>
+						<th scope="col">Creation date</th>
+						<th scope="col">Edit</th>
+						<th scope="col">Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for recipe in recipes %}
+						<tr class="table-primary">
+							<th scope="row">{{ recipe.id }}</th>
+							<td>{{ recipe.name }}
+							</td>
+							<td>{{ (recipe.price == 0) ? 'Unspecified' : recipe.price }}</td>
+							<td>{{ (recipe.difficulty == 0) ? 'Unspecified' : recipe.difficulty }}</td>
+							<td>{{ recipe.createdAt|date('d/m/Y')}}</td>
+							<td>
+								<a href="{{ path('app_recipe.edit', { id: recipe.id }) }}" class='btn btn-info'>
+									Edit</a>
+							</td>
+							<td>
+								<a href="{{ path('app_recipe.delete', { id: recipe.id }) }}" class='btn btn-danger'>
+									Delete</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="navigation d-flex justify-content-center mt-4">
+				{{ knp_pagination_render(recipes) }}
+			</div>
+		{% else %}
+			<h4>
+				There is nothing on your recipe list!</h4>
+		{% endif %}
+	</div>
+{% endblock %}
+
