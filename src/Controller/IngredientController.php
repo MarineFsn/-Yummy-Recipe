@@ -114,6 +114,4 @@ class IngredientController extends AbstractController
         return $this->redirectToRoute('app_ingredient');
     }
 
-    
-
 }
