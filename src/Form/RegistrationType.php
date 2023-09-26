@@ -4,7 +4,7 @@ namespace App\Form;
 
 
 use App\Entity\User;
-use Doctrine\DBAL\Types\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -26,20 +26,20 @@ class RegistrationType extends AbstractType
                     'minlenght' => '2',
                     'maxlenght' => '50', 
                 ],
-                'label' =>'Name / First Name',
-                'label attr' => [
-                'class' => 'form-label',
+                'label' =>'Name / First Name:',
+                'label_attr' => [
+                'class' => 'form-label mt-4',
                 ]
             ])
             ->add('nickName', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control mt-4',
                     'minlenght' => '2',
                     'maxlenght' => '50', 
                 ],
-                'label' =>'Nickname (not required)',
-                'label attr' => [
-                'class' => 'form-label',
+                'label' =>'Nickname: (not required)',
+                'label_attr' => [
+                'class' => 'form-label mt-4',
                 ]
             ])
 
@@ -49,29 +49,41 @@ class RegistrationType extends AbstractType
                     'minlenght' => '2',
                     'maxlenght' => '180',  
                 ],
-                'label' =>'Email Adress',
-                'label attr' => [
-                'class' => 'form-label',
+                'label' =>'Email Adress:',
+                'label_attr' => [
+                'class' => 'form-label mt-4',
                 ]
             ])
 
-            ->add('password', RepeatedType::class,[
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_option' => [
-                    'label' => 'password',
+                'first_options' => [
+                    'attr' => [
+                        'class' => 'form-control'
+                    ],
+                    'label' => 'password:',
+                    'label_attr' => [
+                        'class' => 'form-label  mt-4'
+                    ]
                 ],
-                'second_option' => [
-                    'label'=> 'confirmation password'
+                'second_options' => [
+                    'attr' => [
+                        'class' => 'form-control'
+                    ],
+                    'label' => 'comfirm your password:',
+                    'label_attr' => [
+                        'class' => 'form-label  mt-4'
+                    ]
                 ],
-                'invalid_message' => 'The passwords does not match.'
+                'invalid_message' => 'Your passwords does not match!'
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary',
+                    'class' => 'btn btn-primary mt-4'
                 ]
             ]);
-        ;
     }
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {
