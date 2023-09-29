@@ -23,7 +23,7 @@ class UserType extends AbstractType
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'label' => 'Nom / Prénom',
+                'label' => 'Name /FirstName',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
                 ],
@@ -32,14 +32,14 @@ class UserType extends AbstractType
                     new Assert\Length(['min' => 2, 'max' => 50])
                 ]
             ])
-            ->add('pseudo', TextType::class, [
+            ->add('Nickname', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
                 'required' => false,
-                'label' => 'Pseudo (Facultatif)',
+                'label' => 'Nickname (not required)',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
                 ],
@@ -51,7 +51,7 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'label' => 'Mot de passe',
+                'label' => 'password',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
                 ]
